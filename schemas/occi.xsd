@@ -71,7 +71,7 @@
 	-->
 	<xs:complexType name="kindType">
 	  <xs:sequence>
-	    <xs:element name="parent" type="occi:categoryType" minOccurs="1" maxOccurs="1" />
+	    <xs:element name="parent" type="occi:categoryType" minOccurs="0" maxOccurs="1" />
 	    <xs:element name="attribute" type="occi:attributeSpecType" minOccurs="0" maxOccurs="unbounded" />
 	    <xs:element name="action" type="occi:actionSpecType" minOccurs="0" maxOccurs="unbounded" />
 	  </xs:sequence>
