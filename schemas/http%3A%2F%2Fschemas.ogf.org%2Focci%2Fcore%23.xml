@@ -19,5 +19,11 @@
 
   <occi:kind term="link" title="Core Link">
     <occi:parent scheme="http://schemas.ogf.org/occi/core#" term="entity" />
+    <occi:attribute name="occi.core.source" type="occi:resource" use="required"
+		    title="The Resource instance this Link instance originates from" />
+    <occi:attribute name="occi.core.target" type="xs:anyURI" use="required"
+		    title="The unique identifier of an Object this Link instance points to" />
+    <occi:attribute name="occi.core.target.kind" type="occi:kind" 
+		    title="The Kind of target, if applicable" />
   </occi:kind>  
 </occi:extension>
