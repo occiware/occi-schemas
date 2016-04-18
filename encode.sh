@@ -8,7 +8,7 @@ urlencode() {
         local c="${1:i:1}"
         case $c in
             [a-zA-Z0-9.~_-]) printf "$c" ;;
-            *) printf '%s' "$c" | xxd -p -c1 |
+            *) printf '%s' "$c" | xxd -p -c1 | tr '[:lower:]' '[:upper:]' |
                    while read c; do printf '%%%s' "$c"; done ;;
         esac
     done

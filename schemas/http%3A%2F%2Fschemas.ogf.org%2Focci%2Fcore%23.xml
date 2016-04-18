@@ -3,20 +3,29 @@
 		xmlns:xs="http://www.w3.org/2001/XMLSchema"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://schemas.ogf.org/occi occi.xsd " name="Core"
+		scheme="http://schemas.ogf.org/occi/core#"
 		status="stable" version="1">
 
-  <occi:kind term="entity" scheme="http://schemas.ogf.org/occi/core#" title="Core Entity">
+  <occi:kind term="entity" title="Core Entity">
     <occi:attribute name="occi.core.id" type="xs:string" title="Id" />
     <occi:attribute name="occi.core.title" type="xs:string" title="Display name" />
   </occi:kind>
 
-  <occi:kind term="resource" scheme="http://schemas.ogf.org/occi/core#" title="Core Resource">
+  <occi:kind term="resource" title="Core Resource">
     <occi:parent scheme="http://schemas.ogf.org/occi/core#" term="entity" />
     <occi:attribute name="occi.core.summary" type="xs:string" title="Summarising description" />
   </occi:kind>
 
 
-  <occi:kind term="link" scheme="http://schemas.ogf.org/occi/core#" title="Core Link">
+  <occi:kind term="link" title="Core Link">
     <occi:parent scheme="http://schemas.ogf.org/occi/core#" term="entity" />
+    <occi:attribute name="occi.core.source" type="occi:resource" use="required"
+		    title="The Resource instance this Link instance originates from" />
+    <occi:attribute name="occi.core.source.kind" type="occi:kind" 
+		    title="The Kind of source" />
+    <occi:attribute name="occi.core.target" type="xs:anyURI" use="required"
+		    title="The unique identifier of an Object this Link instance points to" />
+    <occi:attribute name="occi.core.target.kind" type="occi:kind" 
+		    title="The Kind of target, if applicable" />
   </occi:kind>  
 </occi:extension>
