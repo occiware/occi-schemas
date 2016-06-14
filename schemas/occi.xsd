@@ -93,6 +93,14 @@
 	<xs:complexType name="attributeSpecType">
 	  <xs:complexContent>
 	    <xs:extension base="xs:attribute">
+	      <!--
+		  Implemented types are:
+		  xs:string
+		  xs:float
+		  xs:integer
+		  xs:anyURI
+		  xs:enumeration
+	      -->
 	      <xs:attribute name="description" type="xs:string" default="" />
 	      <xs:attribute name="immutable" type="xs:boolean" default="false">
 		<xs:annotation>
