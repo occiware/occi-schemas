@@ -1,116 +1,340 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd" >
 <node
     xmlns="https://raw.githubusercontent.com/kbirken/dbus-emf-model/master/plugins/model.emf.dbusxml/spec/introspect.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+  <xs:annotation>
+    <xs:documentation>
+      erocci backends D-Bus interfaces
+    </xs:documentation>
+    <xs:documentation>
+      (C) 2015-2016 Jean Parpaillon; released under Apache Public License 2.0
+    </xs:documentation>
+    <xs:documentation>
+      Backend interface is made of one interface
+    </xs:documentation>
+  </xs:annotation>
   
   <interface name="org.ow2.erocci.backend.core">
+    <xs:annotation>
+      <xs:documentation>Core interface for erocci backend</xs:documentation>
+      <xs:documentation>
+	Exceptions:
+	'org.ow2.erocci.NotFound'
+	'org.ow2.erocci.Conflict'
+      </xs:documentation>
+    </xs:annotation>
     
     <method name="Init" >
+      <xs:annotation>
+        <xs:documentation>Initialize the backend</xs:documentation>
+        <xs:documentation>
+          In:
+          * opts (string/variant array): backend specific options
+        </xs:documentation>
+      </xs:annotation>
+
       <arg name="opts" type="a{sv}" direction="in" />
     </method>
 
     <method name="Terminate" >
-    </method>
-    
-    <method name="SaveResource" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="kind" type="s" direction="in" />
-      <arg name="mixins" type="as" direction="in" />
-      <arg name="attributes" type="a{sv}" direction="in" />
-      <arg name="owner" type="s" direction="in" />
-
-      <arg name="id" type="s" direction="out" />
+      <xs:annotation>
+        <xs:documentation>Terminate the backend</xs:documentation>
+      </xs:annotation>
     </method>
 
-    <method name="SaveLink" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="kind" type="s" direction="in" />
-      <arg name="mixins" type="as" direction="in" />
-      <arg name="src" type="s" direction="in" />
-      <arg name="target" type="s" direction="in" />
-      <arg name="attributes" type="a{sv}" direction="in" />
-      <arg name="owner" type="s" direction="in" />
+    <method name="Models" >
+      <xs:annotation>
+        <xs:documentation>Get OCCI extensions supported by this backend</xs:documentation>
+        <xs:documentation>
+          Out:
+          * extensions (byte/string array): format/serialized extension array
+	  Supported format: 0 (XML)
+        </xs:documentation>
+      </xs:annotation>
 
-      <arg name="id" type="s" direction="out" />      
+      <arg name="extensions" type="a(ys)" />      
     </method>
 
-    <method name="Update" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="attributes" type="a{sv}" direction="in" />
+    <method name="Get" >
+      <xs:annotation>
+        <xs:documentation>Retrieve an entity</xs:documentation>
+        <xs:documentation>
+          In:
+          * location (string): path relative url part
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+	  * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * links (as): (possible empty) link location list
+	  * owner (string): entity owner
+	  * group (string): entity group
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
+      
+      <arg name="location" type="s" direction="in" />
 
-      <arg name="attributes" type="a{sv}" direction="out" />
-    </method>
-
-    <method name="SaveMixin" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="entities" type="as" direction="in" />
-    </method>
-
-    <method name="UpdateMixin" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="entities" type="as" direction="in" />
-    </method>
-
-    <method name="Find" >
-      <arg name="id" type="s" direction="in" />
-
-      <arg name="entities" type="a(yvsu)" direction="out" />
-    </method>
-
-    <method name="Load" >
-      <arg name="opaque_id" type="v" direction="in" />
-
-      <arg name="id" type="s" direction="out" />
       <arg name="kind" type="s" direction="out" />
       <arg name="mixins" type="as" direction="out" />
       <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="owner" type="s" direction="out" />
+      <arg name="group" type="s" direction="out" />
+      <arg name="serial" type="s" direction="out" />
     </method>
 
-    <method name="List" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="filters" type="a{sv}" direction="in" />
+    <method name="Create1" >
+      <xs:annotation>
+        <xs:documentation>Creates an entity at given location</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative part
+	  * kind (string): kind id
+	  * mixins (string array): mixins ids
+	  * attributes (string/variant array): entity attributes
+	  * owner (string): entity owner (empty=anonymous)
+	  * group (string): entity group (empty=anonymous)
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
 
-      <arg name="opaque_id" type="v" direction="out" />
-      <arg name="serial" type="u" direction="out" />
+      <arg name="location" type="s" direction="in" />
+      <arg name="kind" type="s" direction="in" />
+      <arg name="mixins" type="as" direction="in" />
+      <arg name="attributes" type="a{sv}" direction="in" />
+      <arg name="owner" type="s" direction="in" />
+      <arg name="group" type="s" direction="in" />
+      
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
     </method>
 
-    <method name="Next" >
-      <arg name="opaque_id" type="v" direction="in" />
-      <arg name="start" type="u" direction="in" />
-      <arg name="items" type="u" direction="in" />
+    <method name="Create2" >
+      <xs:annotation>
+        <xs:documentation>Creates an entity and expect backend to generate a location</xs:documentation>
+        <xs:documentation>
+          In:
+	  * kind (string): kind id
+	  * mixins (string array): mixins ids
+	  * attributes (string/variant array): entity attributes
+	  * owner (string): entity owner (empty=anonymous)
+	  * group (string): entity group (empty=anonymous)
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+	  * location (string): entity path relative part
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
 
-      <arg name="entities" type="a(ss)" direction="out" />
+      <arg name="kind" type="s" direction="in" />
+      <arg name="mixins" type="as" direction="in" />
+      <arg name="attributes" type="a{sv}" direction="in" />
+      <arg name="owner" type="s" direction="in" />
+      <arg name="group" type="s" direction="in" />
+      
+      <arg name="location" type="s" direction="out" />
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
+    </method>
+
+    <method name="Update" >
+      <xs:annotation>
+        <xs:documentation>Update an existing entity</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+	  * attributes (string/variant array): attributes to update
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
+
+      <arg name="location" type="s" direction="in" />
+      <arg name="attributes" type="a{sv}" direction="in" />
+      
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
+    </method>
+
+    <method name="Link" >
+      <xs:annotation>
+        <xs:documentation>Set resource endpoint (source or target)</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+	  * type (byte): 0: source, 1: target
+	  * link (string): link location
+        </xs:documentation>
+      </xs:annotation>
+
+      <arg name="location" type="s" direction="in" />
+      <arg name="type" type="y" direction="in" />
+      <arg name="link" type="s" direction="in" />
+    </method>
+
+    <method name="Action" >
+      <xs:annotation>
+        <xs:documentation>Launch an action on the entity</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+	  * action (string): action id
+	  * attributes (a{sv}): action attributes
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
+
+      <arg name="location" type="s" direction="in" />
+      <arg name="action" type="s" direction="in" />
+      <arg name="attributes" type="a{sv}" direction="in" />
+      
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
     </method>
 
     <method name="Delete" >
-      <arg name="id" type="s" direction="in" />
-    </method>
+      <xs:annotation>
+        <xs:documentation>Delete an entity</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+        </xs:documentation>
+      </xs:annotation>
 
-    <property name="schema" type="s" access="read" >
-    </property>
-  </interface>
-  
-  <interface name="org.ow2.erocci.backend.mixin">
-
-    <method name="AddMixin" >
-      <arg name="id" type="s" direction="in" />
       <arg name="location" type="s" direction="in" />
-      <arg name="owner" type="s" direction="in" />
     </method>
 
-    <method name="DelMixin" >
-      <arg name="id" type="s" direction="in" />
-    </method>
-  </interface>
+    <method name="Mixin" >
+      <xs:annotation>
+        <xs:documentation>Associate a mixin with an entity</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+	  * mixin (string): mixin id
+	  * attributes (string/variant array): new attributes
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
 
-  <interface name="org.ow2.erocci.backend.action" >
- 
-    <method name="Action" >
-      <arg name="id" type="s" direction="in" />
-      <arg name="action_id" type="s" direction="in" />
+      <arg name="location" type="s" direction="in" />
+      <arg name="mixin" type="s" direction="in" />
       <arg name="attributes" type="a{sv}" direction="in" />
+      
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
+    </method>
+
+    <method name="Unmixin" >
+      <xs:annotation>
+        <xs:documentation>Disocciate mixin from entity</xs:documentation>
+        <xs:documentation>
+          In:
+	  * location (string): entity path relative path
+	  * mixin (string): mixin id
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+          * kind (string): kind id
+	  * mixins (string array): mixin ids
+	  * attributes (string/variant array): entity attributes
+	  * serial (string): entity serial
+        </xs:documentation>
+      </xs:annotation>
+
+      <arg name="location" type="s" direction="in" />
+      <arg name="mixin" type="s" direction="in" />
+      
+      <arg name="kind" type="s" direction="out" />
+      <arg name="mixins" type="as" direction="out" />
+      <arg name="attributes" type="a{sv}" direction="out" />
+      <arg name="links" type="as" direction="out" />
+      <arg name="serial" type="s" direction="out" />
+    </method>
+
+    <method name="Collection" >
+      <xs:annotation>
+        <xs:documentation>Retrieve a collection, eventually filtered</xs:documentation>
+	<xs:documentation>
+	  Filter is a list of constraint.
+	  Constraint is a 3-tuple:
+	  * operator: 0: EQUAL, 1: LIKE
+	  * key (string): attribute on which apply the constraint (or empty string for any attribute)
+	  * value (variant): constraint value
+	</xs:documentation>
+        <xs:documentation>
+          In:
+	  * id (string): category id or path
+	  * filter (a(ysv)): filter
+	  * start (unsigned integer): index of first record
+	  * number (integer): maximal number of entities to retrieve, -1 for infinite
+        </xs:documentation>
+        <xs:documentation>
+          Out:
+	  * list of entities ('a(sasa{sv}sss)'):
+	    * location (string): entity location
+            * kind (string): kind id
+	    * mixins (string array): mixin ids
+	    * attributes (string/variant array): entity attributes
+	    * links (string array): resource links locations
+	    * owner (string): entity owner
+	    * group (string): entity group owner
+	  * serial (string): collection serial
+        </xs:documentation>
+      </xs:annotation>
+
+      <arg name="id" type="s" direction="in" />
+      <arg name="filter" type="a(ysv)" direction="in" />
+      <arg name="start" type="u" direction="in" />
+      <arg name="number" type="i" direction="in" />
+
+      <arg name="entities" type="a(sasa{sv}sss)" direction="out" />
+      <arg name="serial" type="s" direction="out" />
     </method>
   </interface>
 </node>
-
