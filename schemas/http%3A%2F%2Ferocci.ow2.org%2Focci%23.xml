@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<occi:extension xmlns:occi="http://schemas.ogf.org/occi"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://schemas.ogf.org/occi occi.xsd " name="erocci"
+		scheme="http://erocci.ow2.org/occi#"
+		status="stable" version="1">
+
+  <occi:mixin term="tag" title="User mixin root mixin">
+  </occi:mixin>
+</occi:extension>
