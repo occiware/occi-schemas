@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated at Mon Apr 18 09:51:45 CEST 2016 from platform:/resource/LightIOTExtension/model/light.occie by org.occiware.clouddesigner.occi.gen.xml -->
+<occi:extension xmlns:occi="http://schemas.ogf.org/occi"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.ogf.org/occi occi.xsd"
+    name="light"
+    scheme="http://occiware.org/light#"
+    version="1"
+    status="stable">
+
+  <!-- Kind:  -->
+  <occi:kind term="light" scheme="http://occiware.org/light#" title="">
+    <occi:parent term="resource" scheme="http://schemas.ogf.org/occi/core#"/>
+    <occi:attribute name="occi.light.state" use="optional" default="off" type="xs:string" title="Light IOT Resource"/>
+    <occi:action term="switchOn" scheme="http://occiware.org/light/light/action#" title="Turn on the light">
+    </occi:action>
+    <occi:action term="switchOff" scheme="http://occiware.org/light/light/action#" title="Turn off the light">
+    </occi:action>
+  </occi:kind>
+</occi:extension>
